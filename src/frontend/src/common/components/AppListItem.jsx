@@ -1,6 +1,7 @@
-import { getSlot } from "@/util/helpers";
+import { defineComponent } from "@vue/composition-api";
+import { getSlots } from "@/util/helpers";
 
-export default {
+export default defineComponent({
   name: "AppListItem",
   props: {
     tag: {
@@ -11,8 +12,10 @@ export default {
       type: [String, Array],
     },
   },
-  render() {
-    const TagListItem = `${this.tag}`;
-    return <TagListItem class={this.classes}>{getSlot(this)}</TagListItem>;
+  setup(props, { slots }) {
+    return () => {
+      const TagListItem = `${props.tag}`;
+      return <TagListItem class={props.classes}>{getSlots(slots)}</TagListItem>;
+    };
   },
-};
+});

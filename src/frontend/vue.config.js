@@ -1,8 +1,12 @@
 module.exports = {
+  publicPath: "",
   css: {
     loaderOptions: {
       sass: {
-        additionalData: '@import "@/assets/scss/ds-system/ds.scss";',
+        additionalData: `
+          @import "@/assets/scss/ds-system/ds.scss";
+          @import "@/assets/scss/mixins/mixins.scss";
+        `,
       },
     },
   },
@@ -30,6 +34,14 @@ module.exports = {
     overlay: {
       warnings: true,
       errors: true,
+    },
+  },
+  configureWebpack: {
+    module: {
+      rules: [{
+        test: /\.svg$/,
+        loader: "svgo-loader",
+      }]
     },
   },
 };

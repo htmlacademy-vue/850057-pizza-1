@@ -1,11 +1,9 @@
+import { defineComponent } from "@vue/composition-api";
 import AppListItem from "@/common/components/AppListItem";
-import { getSlot } from "@/util/helpers";
+import { getSlots } from "@/util/helpers";
 
-export default {
+export default defineComponent({
   name: "AppList",
-  components: {
-    AppListItem,
-  },
   props: {
     tag: {
       type: String,
@@ -18,15 +16,16 @@ export default {
       type: [String, Array],
     },
   },
-  render() {
-    const TagList = `${this.tag}`;
-    if (this.items && this.items.length) {
-      const items = this.items.map((item) => {
-        return <AppListItem>{item}</AppListItem>;
-      });
-      return <TagList class={this.classes}>{items}</TagList>;
-    }
-
-    return <TagList class={this.classes}>{getSlot(this)}</TagList>;
+  setup(props, { slots }) {
+    const TagList = `${props.tag}`;
+    return () => {
+      if (props.items && props.items.length) {
+        const items = props.items.map((item) => {
+          return <AppListItem>{item}</AppListItem>;
+        });
+        return <TagList class={props.classes}>{items}</TagList>;
+      }
+      return <TagList class={props.classes}>{getSlots(slots)}</TagList>;
+    };
   },
-};
+});

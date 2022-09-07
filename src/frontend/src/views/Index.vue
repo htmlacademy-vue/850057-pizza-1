@@ -1,32 +1,42 @@
 <template>
   <AppMain>
     <form action="#" method="post">
-      <div class="content__wrapper">
+      <AppContent>
         <AppHeading level="1" :classes="['title', 'title--big']">
           Конструктор пиццы
         </AppHeading>
-        <BuilderDoughSelector :dough="dough" :doughValues="doughValues" />
-        <BuilderSizeSelector :sizes="sizes" :sizesValues="sizesValues" />
-        <BuilderIngredientsSelector
-          :ingredients="ingredients"
-          :ingredientsValues="ingredientsValues"
-          :sauces="sauces"
-          :saucesValues="saucesValues"
+        <BuilderDoughSelector
+          :iValue="doughValue"
+          :dough="doughProp"
+          @change="setDough($event)"
         />
-        <div class="content__pizza">
-          <BuilderPizzaSearch @setPizzaByName="setPizza" />
+        <BuilderSizeSelector :sizes="sizesProp" />
+        <BuilderIngredientsSelector
+          :ingredients="ingredientsProp"
+          :sauces="saucesProp"
+        />
+        <AppContent postfix="pizza">
+          <BuilderPizzaSearch
+            :iValue="namePizza"
+            :error="error"
+            @setPizzaByName="setPizza($event)"
+            @update:iValue="setPizza($event)"
+            @update:error="getError($event)"
+          />
           <BuilderPizzaView :fillings="fillings" @drop="getDropData" />
           <BuilderPriceCounter />
-        </div>
-      </div>
+        </AppContent>
+      </AppContent>
     </form>
   </AppMain>
 </template>
 
 <script>
+import { ref, reactive } from "@vue/composition-api";
 import { dough, ingredients, sauces, sizes } from "@/static/pizza.json";
-import AppMain from "@/layouts/AppMain";
-import AppHeading from "@/common/components/AppHeading";
+import AppMain from "@/layouts/AppMain/AppMain";
+import AppHeading from "@/common/components/AppHeading/AppHeading";
+import AppContent from "@/layouts/AppContent/AppContent";
 import BuilderDoughSelector from "@/modules/Builder/components/BuilderDoughSelector";
 import BuilderIngredientsSelector from "@/modules/Builder/components/BuilderIngredientsSelector";
 import BuilderSizeSelector from "@/modules/Builder/components/BuilderSizeSelector";
@@ -40,6 +50,7 @@ export default {
   components: {
     AppMain,
     AppHeading,
+    AppContent,
     BuilderDoughSelector,
     BuilderIngredientsSelector,
     BuilderSizeSelector,
@@ -47,105 +58,59 @@ export default {
     BuilderPizzaSearch,
     BuilderPriceCounter,
   },
-  data() {
-    return {
-      fillings: [],
-      doughValues: {
-        1: {
-          value: "light",
-        },
-        2: {
-          value: "large",
-        },
-      },
-      sizesValues: {
-        1: {
-          value: "small",
-        },
-        2: {
-          value: "normal",
-        },
-        3: {
-          value: "big",
-        },
-      },
-      saucesValues: {
-        1: {
-          value: "tomato",
-          checked: true,
-        },
-        2: {
-          value: "creamy",
-          checked: false,
-        },
-      },
-      ingredientsValues: {
-        1: {
-          value: "mushrooms",
-        },
-        2: {
-          value: "cheddar",
-        },
-        3: {
-          value: "salami",
-        },
-        4: {
-          value: "ham",
-        },
-        5: {
-          value: "ananas",
-        },
-        6: {
-          value: "bacon",
-        },
-        7: {
-          value: "onion",
-        },
-        8: {
-          value: "chile",
-        },
-        9: {
-          value: "jalapeno",
-        },
-        10: {
-          value: "olives",
-        },
-        11: {
-          value: "tomatoes",
-        },
-        12: {
-          value: "salmon",
-        },
-        13: {
-          value: "mozzarella",
-        },
-        14: {
-          value: "parmesan",
-        },
-        15: {
-          value: "blue_cheese",
-        },
-      },
-      dough,
-      ingredients,
-      sauces,
-      sizes,
-    };
-  },
-  methods: {
-    setPizza(e) {
-      console.log(e);
-    },
-    updateFillings(filling) {
-      // TODO str => obj
-      if (this.fillings.find((v) => v === filling)) {
+  setup() {
+    const isLoading = ref(false);
+    const fillings = reactive([]);
+    const doughValue = ref("light");
+    const namePizza = ref("");
+    const error = ref("");
+    const doughProp = reactive(dough);
+    const ingredientsProp = reactive(ingredients);
+    const saucesProp = reactive(sauces);
+    const sizesProp = reactive(sizes);
+
+    const updateFillings = (filling) => {
+      if (fillings.find((v) => v === filling)) {
         return;
       }
-      this.fillings.push(filling);
-    },
-    getDropData(e) {
-      this.updateFillings(e);
-    },
+      fillings.push(filling);
+    };
+
+    const getDropData = (e) => {
+      updateFillings(e);
+    };
+
+    const setDough = (e) => {
+      doughValue.value = e.target.value;
+    };
+
+    const setPizza = (e) => {
+      if (typeof e === "string") {
+        namePizza.value = e;
+        return false;
+      }
+      namePizza.value = e.target.value;
+    };
+
+    const getError = (e) => {
+      error.value = e;
+    };
+
+    return {
+      isLoading,
+      fillings,
+      namePizza,
+      doughValue,
+      error,
+      doughProp,
+      ingredientsProp,
+      saucesProp,
+      sizesProp,
+      setDough,
+      getDropData,
+      setPizza,
+      getError,
+    };
   },
 };
 </script>

@@ -1,18 +1,18 @@
 <template>
   <div id="app">
-    <AppHeader />
+    <TheHeader />
     <Index />
   </div>
 </template>
 
 <script>
 import Index from "@/views/Index.vue";
-import AppHeader from "@/layouts/AppHeader";
+import TheHeader from "@/layouts/TheHeader/TheHeader";
 
 export default {
   name: "App",
   components: {
-    AppHeader,
+    TheHeader,
     Index,
   },
 };

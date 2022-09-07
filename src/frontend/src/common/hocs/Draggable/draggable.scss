@@ -3,4 +3,7 @@
   &--dragging {
     opacity: .9;
   }
+  &:focus {
+    cursor: move;
+  }
 }

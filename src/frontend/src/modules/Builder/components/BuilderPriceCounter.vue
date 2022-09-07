@@ -1,16 +1,18 @@
 <template>
-  <div class="content__result">
+  <AppContent postfix="result">
     <p>Итого: 0 ₽</p>
     <AppButton class="button" disabled>Готовьте!</AppButton>
-  </div>
+  </AppContent>
 </template>
 
 <script>
-import AppButton from "@/common/components/AppButton";
+import AppContent from "@/layouts/AppContent/AppContent";
+import AppButton from "@/common/components/AppButton/AppButton";
 
 export default {
   name: "BuilderPriceCounter",
   components: {
+    AppContent,
     AppButton,
   },
 };

@@ -1,5 +1,6 @@
 .input {
   display: block;
+  position: relative;
 
   span {
     @include r-s14-h16;
@@ -51,5 +52,12 @@
 
       white-space: nowrap;
     }
+  }
+
+  &__cntrl-voice {
+    position: absolute;
+    top: 7px;
+    right: 7px;
+    z-index: 100;
   }
 }
