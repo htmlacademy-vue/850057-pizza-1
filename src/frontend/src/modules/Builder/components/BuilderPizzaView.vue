@@ -1,6 +1,6 @@
 <template>
   <AppContent postfix="constructor">
-    <div class="pizza pizza--foundation--big-tomato" v-on="currentListeners">
+    <div :class="classes" v-on="currentListeners">
       <div class="pizza__wrapper">
         <div
           v-for="(filling, i) in fillings"
@@ -14,7 +14,12 @@
 
 <script>
 import AppContent from "@/layouts/AppContent/AppContent";
+import { DOUGH_TYPE, SAUCES_TYPE } from "@/common/constants/";
 
+const Sizes = {
+  BIG: "big",
+  SMALL: "small",
+};
 export default {
   name: "BuilderPizzaView",
   components: {
@@ -25,10 +30,34 @@ export default {
       type: [String, Array, Set],
       default: () => [],
     },
+    sauce: {
+      type: String,
+      default: "tomato",
+      validator: function (val) {
+        return SAUCES_TYPE.includes(val);
+      },
+    },
+    dough: {
+      type: String,
+      default: "light",
+      validator: function (val) {
+        return DOUGH_TYPE.includes(val);
+      },
+    },
   },
   computed: {
     currentListeners() {
       return this.$listeners;
+    },
+    getSize() {
+      return this.dough === "large" ? Sizes.BIG : Sizes.SMALL;
+    },
+    classes() {
+      return {
+        pizza: true,
+        [`pizza--foundation--${this.getSize}-${this.sauce}`]:
+          this.dough && this.sauce,
+      };
     },
   },
 };

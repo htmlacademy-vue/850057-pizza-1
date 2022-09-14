@@ -28,6 +28,10 @@ export const TRANSFER_DATA_PAYLOAD = "payload";
 
 export const ICON_TYPE = ["svg", "img"];
 
+export const DOUGH_TYPE = ["light", "large"];
+
+export const SAUCES_TYPE = ["tomato", "creamy"];
+
 export const ICON_ARIA_ROLE_TYPE = ["button", "img"];
 
 export const PIZZA_NAMES = [
@@ -44,5 +48,36 @@ export const PIZZA_NAMES = [
   "кальцоне",
   "карбонара",
   "вегетарианская",
-  "средиземноморская"
+  "средиземноморская",
 ];
+
+export const PIZZA_SIZES = {
+  "23 см": "маленькая",
+  "32 см": "стандартная",
+  "45 см": "большая",
+};
+
+export const DICTIONARY = {
+  грибы: "mushrooms",
+  чеддер: "cheddar",
+  салями: "salami",
+  ветчина: "ham",
+  ананас: "ananas",
+  бекон: "bacon",
+  лук: "onion",
+  чили: "chile",
+  халапеньо: "jalapeno",
+  маслины: "olives",
+  томаты: "tomatoes",
+  лосось: "salmon",
+  моцарелла: "mozzarella",
+  пармезан: "parmesan",
+  "блю чиз": "blue_cheese",
+  тонкое: "light",
+  толстое: "large",
+  томатный: "tomato",
+  сливочный: "creamy",
+  маленькая: "small",
+  стандартная: "normal",
+  большая: "big",
+};

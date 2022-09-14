@@ -12,7 +12,7 @@ const inputProps = () => ({
     type: String,
   },
   iValue: {
-    type: String,
+    type: [String, Number],
   },
   iLabel: {
     type: Boolean,

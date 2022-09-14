@@ -1,0 +1,39 @@
+/* color */
+$from-color: rgba(170, 170, 170, 0.2);
+$to-color: rgba($from-color, 8%);
+
+/* animation */
+$animation-duration: 2s;
+$animation-timing-function: easy;
+
+
+.a-skeleton {
+  position: relative;
+  display: table;
+  width: 100%;
+  &__content {
+    display: table-cell;
+    width: 100%;
+  }
+  &__sidebar {
+    display: table-cell;
+    width: 100%;
+  }
+  &__item {
+    display: block;
+    background: linear-gradient(90deg, $from-color 25%, $to-color 37%, $from-color 63%);
+    background-size: 500% 100%
+  }
+  &--active &__item{
+    animation: 2s skeleton-loading ease infinite;
+  }
+}
+
+@keyframes skeleton-loading {
+  0% {
+    background-position:100% 50%;
+  }
+  to {
+    background-position:0 50%;
+  }
+ }

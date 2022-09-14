@@ -7,14 +7,15 @@
         <AppInput
           v-for="{ id, name } in sizes"
           :key="`${id}-sizes`"
-          :id="id"
-          :iValue="sizesValues[id].value"
+          :id="`${id}-sizes`"
+          :iValue="dict[sizeTypes[name.toLowerCase()]]"
           :iLabel="true"
           :iLabelClasses="[
             'diameter__input',
-            `diameter__input--${sizesValues[id].value}`,
+            `diameter__input--${dict[sizeTypes[name.toLowerCase()]]}`,
           ]"
-          :checked="sizesValues[id].checked"
+          :checked="`${id}-sizes` === activeId"
+          @change="setSize($event)"
           iInputClasses="visually-hidden"
           type="radio"
           iName="diameter"
@@ -27,6 +28,7 @@
 </template>
 
 <script>
+import { PIZZA_SIZES, DICTIONARY } from "@/common/constants";
 import AppContent from "@/layouts/AppContent/AppContent";
 import AppHeading from "@/common/components/AppHeading/AppHeading";
 import AppInput from "@/common/components/AppInput/AppInput";
@@ -43,20 +45,20 @@ export default {
       type: Array,
       require: true,
     },
+    activeId: {
+      type: String,
+    },
   },
-  data() {
+  setup(props, { emit }) {
+    const dict = { ...DICTIONARY };
+    const sizeTypes = { ...PIZZA_SIZES };
+    const setSize = (e) => {
+      emit("change", e);
+    };
     return {
-      sizesValues: {
-        1: {
-          value: "small",
-        },
-        2: {
-          value: "normal",
-        },
-        3: {
-          value: "big",
-        },
-      },
+      sizeTypes,
+      setSize,
+      dict,
     };
   },
 };

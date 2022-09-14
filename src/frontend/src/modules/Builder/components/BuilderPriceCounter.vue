@@ -1,7 +1,7 @@
 <template>
   <AppContent postfix="result">
-    <p>Итого: 0 ₽</p>
-    <AppButton class="button" disabled>Готовьте!</AppButton>
+    <p>Итого: {{ total }} ₽</p>
+    <AppButton class="button" :disabled="total === 0">Готовьте!</AppButton>
   </AppContent>
 </template>
 
@@ -14,6 +14,12 @@ export default {
   components: {
     AppContent,
     AppButton,
+  },
+  props: {
+    total: {
+      type: Number,
+      default: 0,
+    },
   },
 };
 </script>

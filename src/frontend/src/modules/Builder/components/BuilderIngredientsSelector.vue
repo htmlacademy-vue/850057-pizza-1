@@ -8,12 +8,13 @@
           <p>Основной соус:</p>
           <AppInput
             v-for="{ id, name } in sauces"
-            :key="id"
+            :key="`${id}-sauces`"
             :id="`${id}-sauces`"
-            :iValue="saucesValues[id].value"
+            :iValue="dict[name.toLowerCase()]"
             :iLabel="true"
             :iLabelClasses="['radio', 'ingredients__input']"
-            :checked="saucesValues[id].checked"
+            :checked="`${id}-sauces` === activeId"
+            @change="setSauces($event)"
             iInputClasses="visually-hidden"
             type="radio"
             iName="sauce"
@@ -27,27 +28,21 @@
           <AppList class="ingredients__list">
             <li
               v-for="{ id, name } in ingredients"
-              :key="id"
+              :key="`${id}-ingredient`"
               class="ingredients__item"
             >
               <BuilderIngredientsItem
                 :name="name"
-                :type="ingredientsValues[id].value"
-                :transferData="ingredientsValues[id].value"
+                :type="dict[name.toLowerCase()]"
+                :transferData="dict[name.toLowerCase()]"
               />
-
-              <div class="counter counter--orange ingredients__counter">
-                <AppButton
-                  class="counter__button counter__button--minus"
-                  disabled
-                >
-                  <span class="visually-hidden">Меньше</span>
-                </AppButton>
-                <AppInput iValue="0" name="counter" class="counter__input" />
-                <AppButton class="counter__button counter__button--plus">
-                  <span class="visually-hidden">Больше</span>
-                </AppButton>
-              </div>
+              <AppItemCounter
+                :id="id"
+                :name="dict[name.toLowerCase()]"
+                @increase="onIncrease($event)"
+                @decrease="onDecrease($event)"
+                amount="0"
+              />
             </li>
           </AppList>
         </div>
@@ -57,10 +52,11 @@
 </template>
 
 <script>
+import { DICTIONARY } from "@/common/constants/";
 import AppContent from "@/layouts/AppContent/AppContent";
 import AppHeading from "@/common/components/AppHeading/AppHeading";
 import AppInput from "@/common/components/AppInput/AppInput";
-import AppButton from "@/common/components/AppButton/AppButton";
+import AppItemCounter from "@/common/components/AppItemCounter/AppItemCounter";
 import AppList from "@/common/components/AppList";
 import BuilderIngredientsItem from "@/modules/Builder/components/BuilderIngredientsItem";
 import withDrag from "@/common/hocs/Draggable/withDrag";
@@ -71,7 +67,7 @@ export default {
     AppContent,
     AppHeading,
     AppInput,
-    AppButton,
+    AppItemCounter,
     BuilderIngredientsItem: withDrag(BuilderIngredientsItem),
     AppList,
   },
@@ -84,67 +80,25 @@ export default {
       type: Array,
       require: true,
     },
+    activeId: {
+      type: String,
+    },
   },
   data() {
     return {
-      saucesValues: {
-        1: {
-          value: "tomato",
-          checked: true,
-        },
-        2: {
-          value: "creamy",
-          checked: false,
-        },
-      },
-      ingredientsValues: {
-        1: {
-          value: "mushrooms",
-        },
-        2: {
-          value: "cheddar",
-        },
-        3: {
-          value: "salami",
-        },
-        4: {
-          value: "ham",
-        },
-        5: {
-          value: "ananas",
-        },
-        6: {
-          value: "bacon",
-        },
-        7: {
-          value: "onion",
-        },
-        8: {
-          value: "chile",
-        },
-        9: {
-          value: "jalapeno",
-        },
-        10: {
-          value: "olives",
-        },
-        11: {
-          value: "tomatoes",
-        },
-        12: {
-          value: "salmon",
-        },
-        13: {
-          value: "mozzarella",
-        },
-        14: {
-          value: "parmesan",
-        },
-        15: {
-          value: "blue_cheese",
-        },
-      },
+      dict: DICTIONARY,
     };
+  },
+  methods: {
+    setSauces(e) {
+      this.$emit("change", e);
+    },
+    onIncrease(e) {
+      this.$emit("increase", e);
+    },
+    onDecrease(e) {
+      this.$emit("decrease", e);
+    },
   },
 };
 </script>

@@ -6,15 +6,15 @@
       <div class="sheet__content dough">
         <AppInput
           v-for="{ id, name, description } in dough"
-          :key="id"
+          :key="`${id}-dough`"
           :id="`${id}-dough`"
-          :iValue="iValue"
+          :iValue="dict[name.toLowerCase()]"
           :iLabel="true"
           :iLabelClasses="[
             'dough__input',
-            `dough__input--${doughValues[id].value}`,
+            `dough__input--${dict[name.toLowerCase()]}`,
           ]"
-          :checked="doughValues[id].value === iValue"
+          :checked="`${id}-dough` === activeId"
           @change="setDough($event)"
           iName="dough"
           iInputClasses="visually-hidden"
@@ -29,6 +29,7 @@
 </template>
 
 <script>
+import { DICTIONARY } from "@/common/constants/";
 import AppContent from "@/layouts/AppContent/AppContent";
 import AppHeading from "@/common/components/AppHeading/AppHeading";
 import AppInput from "@/common/components/AppInput/AppInput";
@@ -44,6 +45,9 @@ export default {
     iValue: {
       type: String,
     },
+    activeId: {
+      type: String,
+    },
     dough: {
       type: Array,
       require: true,
@@ -51,14 +55,7 @@ export default {
   },
   data() {
     return {
-      doughValues: {
-        1: {
-          value: "light",
-        },
-        2: {
-          value: "large",
-        },
-      },
+      dict: DICTIONARY,
     };
   },
   methods: {
