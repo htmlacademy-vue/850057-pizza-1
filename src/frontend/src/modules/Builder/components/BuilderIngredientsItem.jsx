@@ -1,3 +1,5 @@
+import "@/modules/Builder/style/BuilderIngredientsItem.scss";
+
 export default {
   name: "BuilderIngredientsItem",
   props: {

@@ -1,5 +1,10 @@
 import Vue from "vue";
-import { TRANSFER_DATA_PAYLOAD, DRAGGABLE_DEFAULT } from "@/common/constants/";
+import AppFragment from "@/common/components/AppFragment/AppFragment";
+import {
+  TRANSFER_DATA_PAYLOAD,
+  DRAGGABLE_DEFAULT,
+  NOTIFICATION_DROP_MESSAGES,
+} from "@/common/constants/";
 import { getSlot } from "@/util/helpers";
 import "@/common/hocs/Draggable/draggable.scss";
 
@@ -17,8 +22,11 @@ const withDrag = ({ Component, typeDnD = "move", dataType } = {}) => {
     },
     data() {
       return {
+        hasFocused: false,
         isDragging: false,
         tagName: "",
+        notification: NOTIFICATION_DROP_MESSAGES,
+        statusNotification: "",
       };
     },
     computed: {
@@ -36,6 +44,10 @@ const withDrag = ({ Component, typeDnD = "move", dataType } = {}) => {
       setAvailableDragging(dragging) {
         this.isDragging = dragging;
       },
+      onFocus() {
+        this.hasFocused = true;
+        this.statusNotification = this.notification?.activated;
+      },
       onKeyUp() {
         if (this.disabled) {
           return;
@@ -44,6 +56,7 @@ const withDrag = ({ Component, typeDnD = "move", dataType } = {}) => {
       },
       onKey(e) {
         if (e.code === "ArrowRight") {
+          this.status = this.notification.droped;
           const data = this.$attrs[dataType];
           this.$emit("keyup", data);
         }
@@ -61,22 +74,36 @@ const withDrag = ({ Component, typeDnD = "move", dataType } = {}) => {
     mounted() {
       this.tagName = this.$el.nodeName;
     },
+
     render() {
       const originalProps = this.$attrs || [];
       return (
-        <Component
-          props={originalProps}
-          vOn:dragstart={this.onStartDrag}
-          disabled={this.disabled}
-          class={this.classes}
-          draggable={!this.isDraggableDefaultElem}
-          aria-grabbed={this.isDragging.toString()}
-          vOn:keyup_enter={this.onKeyUp}
-          vOn:keyup_right={this.onKey}
-          tabindex="0"
-        >
-          {getSlot(this)}
-        </Component>
+        <AppFragment>
+          <Component
+            props={originalProps}
+            vOn:dragstart={this.onStartDrag}
+            disabled={this.disabled}
+            class={this.classes}
+            draggable={!this.isDraggableDefaultElem}
+            aria-grabbed={this.isDragging.toString()}
+            vOn:keyup_enter={this.onKeyUp}
+            vOn:focus={this.onFocus}
+            vOn:keyup_right={this.onKey}
+            aria-describedby="statusNotification"
+            tabindex="0"
+          >
+            {getSlot(this)}
+          </Component>
+          <portal to="notification">
+            <span
+              aria-live="assertive"
+              class="draggable__notifier"
+              id="statusNotification"
+            >
+              {this.statusNotification}
+            </span>
+          </portal>
+        </AppFragment>
       );
     },
   });

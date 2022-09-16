@@ -81,3 +81,9 @@ export const DICTIONARY = {
   стандартная: "normal",
   большая: "big",
 };
+
+export const NOTIFICATION_DROP_MESSAGES = {
+  activated:
+    "Пожалуйста, нажмите клавишу Enter для активации выбранного элемента",
+  droped: "Пожалуйста, нажмите клавишу Right для перемещения элемента",
+};

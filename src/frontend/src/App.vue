@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <portal-target name="notification"></portal-target>
     <TheHeader />
     <Index />
   </div>
