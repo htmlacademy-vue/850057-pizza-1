@@ -73,9 +73,6 @@ const withDrag = ({ Component, typeDnD = "move", dataType } = {}) => {
           aria-grabbed={this.isDragging.toString()}
           vOn:keyup_enter={this.onKeyUp}
           vOn:keyup_right={this.onKey}
-          vOn:keyup_left={this.onKey}
-          vOn:keyup_top={this.onKey}
-          vOn:keyup_bottom={this.onKey}
           tabindex="0"
         >
           {getSlot(this)}
