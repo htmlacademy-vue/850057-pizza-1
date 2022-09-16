@@ -35,6 +35,7 @@
                 :name="name"
                 :type="dict[name.toLowerCase()]"
                 :transferData="dict[name.toLowerCase()]"
+                @keyup="updateDnDData($event)"
               />
               <AppItemCounter
                 :id="id"
@@ -68,7 +69,10 @@ export default {
     AppHeading,
     AppInput,
     AppItemCounter,
-    BuilderIngredientsItem: withDrag(BuilderIngredientsItem),
+    BuilderIngredientsItem: withDrag({
+      Component: BuilderIngredientsItem,
+      dataType: "type",
+    }),
     AppList,
   },
   props: {
@@ -98,6 +102,9 @@ export default {
     },
     onDecrease(e) {
       this.$emit("decrease", e);
+    },
+    updateDnDData(e) {
+      this.$emit("setDndData", e);
     },
   },
 };

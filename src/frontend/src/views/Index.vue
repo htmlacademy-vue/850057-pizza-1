@@ -22,6 +22,7 @@
           @change="setBasisToOrder($event)"
           @increase="onIncrease($event)"
           @decrease="onDecrease($event)"
+          @setDndData="onSetDnDData($event)"
         />
         <AppContent postfix="pizza">
           <BuilderPizzaSearch
@@ -110,15 +111,6 @@ export default {
       }
       return result;
     };
-    // const getTotalPrice = () => {
-    //   console.log(order);
-    //   const values = Object.values(order);
-    //   const r = values.reduce((acc, curr) => {
-    //     console.log("acc ", acc, "curr ", curr.price);
-    //     return acc + Number(curr.price);
-    //   }, 0);
-    //   return r;
-    // };
     const getNumFromId = (id) => {
       const pattern = /\d/g;
       return id.match(pattern).join("");
@@ -226,6 +218,14 @@ export default {
       setIngredientsToOrder(id, value, name);
     };
 
+    const onSetDnDData = (e) => {
+      const data = e;
+      if (!data) {
+        return false;
+      }
+      updateFillings(data);
+    };
+
     watch(order, () => {
       const ingredients = order?.ingredients;
       if (ingredients) {
@@ -248,6 +248,7 @@ export default {
       getError,
       onIncrease,
       onDecrease,
+      onSetDnDData,
     };
   },
 };
