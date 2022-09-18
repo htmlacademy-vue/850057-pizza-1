@@ -38,10 +38,12 @@ module.exports = {
   },
   configureWebpack: {
     module: {
-      rules: [{
-        test: /\.svg$/,
-        loader: "svgo-loader",
-      }]
+      rules: [
+        {
+          test: /\.svg$/,
+          loader: "svgo-loader",
+        },
+      ],
     },
   },
 };
