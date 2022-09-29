@@ -1,0 +1,21 @@
+@import 'variables';
+
+.error {
+  position: absolute;
+  padding: 4px;
+  @include l-s11-h13;
+  color: $error_red-900;
+  transition: .3s all ease-in;
+  animation: fadeInDown .5s;
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0%);
+  }
+}

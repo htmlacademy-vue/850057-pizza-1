@@ -1,3 +1,4 @@
 module.exports = {
-  presets: ["@vue/cli-plugin-babel/preset"],
+  presets: ["vca-jsx", "@vue/babel-preset-jsx"],
+  plugins: ["@babel/plugin-proposal-optional-chaining"],
 };
